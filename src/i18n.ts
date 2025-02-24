@@ -1,7 +1,7 @@
 import Polyglot from 'node-polyglot';
 
 const phrasesES = {
-  "app_title": "ChromaGrid - Extractor Profesional de Colores",
+  "app_title": "ChromaGrid",
   "header_title": "ChromaGrid 🎨",
   "header_subtitle": "Paleta de colores instantánea de tu imagen.<br>Sube, extrae y copia tu paleta de colores en segundos. 🚀",
   "upload_button": "Sube Tu Imagen",
@@ -10,7 +10,7 @@ const phrasesES = {
 };
 
 const phrasesEN = {
-  "app_title": "ChromaGrid - Professional Color Extractor",
+  "app_title": "ChromaGrid",
   "header_title": "ChromaGrid 🎨",
   "header_subtitle": "Instant color palette from your image.<br>Upload, extract, and copy your color palette in seconds. 🚀",
   "upload_button": "Upload Your Image",

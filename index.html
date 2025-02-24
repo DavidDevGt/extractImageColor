@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <title>ChromaGrid - Extractor Profesional de Colores</title>
-    <link rel="stylesheet" href="/src/styles/main.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ChromaGrid</title>
+  <meta name="description" content="Extrae la paleta de colores de cualquier imagen en segundos con ChromaGrid. Sube tu imagen y copia tu paleta de colores al instante." />
+
+  <meta name="keywords" content="colores, paleta, extractor de colores, diseño, imagen, ChromaGrid" />
+
+  <meta property="og:title" content="ChromaGrid" />
+  <meta property="og:description" content="Extrae la paleta de colores de cualquier imagen en segundos con ChromaGrid." />
+  <meta property="og:type" content="website" />
+
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ChromaGrid" />
+  <meta name="twitter:description" content="Extrae la paleta de colores de cualquier imagen en segundos con ChromaGrid." />
+
+  <link rel="stylesheet" href="/src/styles/main.css" />
 </head>
 
 <body>
-    <header>
-        <h1>ChromaGrid 🎨</h1>
-        <p>
-            Paleta de colores instantánea de tu imagen.<br>
-            Sube, extrae y copia tu paleta de colores en segundos. 🚀
-        </p>
-        <button id="upload-button" class="upload-cta">Sube Tu Imagen</button>
-        <input type="file" id="image-input" accept="image/*" style="display: none;" />
-    </header>
+  <header>
+    <h1>ChromaGrid 🎨</h1>
+    <p>
+      Paleta de colores instantánea de tu imagen.<br>
+      Sube, extrae y copia tu paleta de colores en segundos. 🚀
+    </p>
+    <button id="upload-button" class="upload-cta">Sube Tu Imagen</button>
+    <input type="file" id="image-input" accept="image/*" style="display: none;" />
+  </header>
 
-    <main>
-        <div id="cards-container" class="cards-container"></div>
-    </main>
+  <main>
+    <div id="cards-container" class="cards-container"></div>
+  </main>
 
-    <script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/src/main.ts"></script>
 </body>
-
 </html>

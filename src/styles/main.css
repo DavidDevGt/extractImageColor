@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
+    /* Colors */
     --primary-bg: #1e1e1e;
     --card-bg: #2c2c2c;
     --primary-text: #ffffff;
@@ -6,9 +9,22 @@
     --accent-color: #ff6b6b;
     --button-primary: #056DDB;
     --button-hover: #0056b3;
+    
+    /* Shadows */
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --hover-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+    
+    /* Transitions */
     --transition-speed: 0.3s;
+    
+    /* Typography Scale */
+    --font-xs: clamp(0.75rem, 1vw, 0.875rem);
+    --font-sm: clamp(0.875rem, 1.2vw, 1rem);
+    --font-base: clamp(1rem, 1.5vw, 1.125rem);
+    --font-lg: clamp(1.25rem, 2vw, 1.5rem);
+    --font-xl: clamp(2rem, 5vw, 2.5rem);
 }
+
 
 * {
     margin: 0;
@@ -20,56 +36,62 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--primary-bg);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: var(--font-base);
     color: var(--primary-text);
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 header {
     text-align: center;
-    padding: 60px 20px 40px;
+    padding: clamp(40px, 8vh, 60px) 20px clamp(30px, 5vh, 40px);
     max-width: 900px;
     width: 100%;
 }
 
 header h1 {
     margin: 0;
-    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-size: var(--font-xl);
     color: var(--accent-color);
-    letter-spacing: -0.5px;
+    letter-spacing: -0.025em;
     font-weight: 700;
+    line-height: 1.2;
 }
 
 header p {
-    margin: 20px auto 0;
+    margin: 1.5rem auto 0;
     color: var(--secondary-text);
-    font-size: clamp(1rem, 2vw, 1.1rem);
+    font-size: var(--font-base);
     max-width: 600px;
-    line-height: 1.6;
+    line-height: 1.7;
+    font-weight: 400;
 }
 
 .upload-cta {
-    margin: 40px auto 0;
+    margin: 2.5rem auto 0;
     background-color: var(--button-primary);
     border: none;
     color: var(--primary-text);
-    padding: 16px 32px;
-    font-size: 1rem;
+    padding: 1rem 2rem;
+    font-size: var(--font-base);
     border-radius: 8px;
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    font-weight: 500;
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
     position: relative;
     overflow: hidden;
+    letter-spacing: 0.01em;
 }
 
 .upload-cta:hover {
     background-color: var(--button-hover);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
 }
 
@@ -96,27 +118,28 @@ main {
 
 .card {
     background-color: var(--card-bg);
-    border-radius: 12px;
+    border-radius: 16px;
     box-shadow: var(--card-shadow);
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 24px;
+    padding: clamp(20px, 4vh, 32px);
     position: relative;
-    gap: 24px;
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    gap: clamp(16px, 3vw, 32px);
+    transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--hover-shadow);
 }
 
 .card-image {
     flex-shrink: 0;
-    width: 140px;
-    height: 140px;
-    border-radius: 10px;
+    width: clamp(120px, 20vw, 160px);
+    height: clamp(120px, 20vw, 160px);
+    border-radius: 12px;
     overflow: hidden;
     background-color: #444;
     display: flex;
@@ -150,7 +173,7 @@ main {
     border-radius: 8px;
     position: relative;
     border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: all var(--transition-speed);
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
 }
 
@@ -165,17 +188,18 @@ main {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%) translateY(-8px);
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.9);
     color: var(--primary-text);
-    padding: 6px 10px;
+    padding: 0.5rem 0.75rem;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 500;
     white-space: nowrap;
     visibility: hidden;
     opacity: 0;
-    transition: all var(--transition-speed);
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 3;
+    letter-spacing: 0.02em;
 }
 
 .color-box:hover .color-tooltip {
@@ -198,7 +222,7 @@ main {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all var(--transition-speed);
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-close:hover {
@@ -249,32 +273,33 @@ main {
 
 @media (max-width: 768px) {
     header {
-        padding: 40px 20px 30px;
+        padding: clamp(30px, 6vh, 40px) 20px clamp(20px, 4vh, 30px);
     }
 
     .card {
         flex-direction: column;
         align-items: stretch;
-        padding: 20px;
+        padding: 1.25rem;
     }
 
     .card-image {
         width: 100%;
-        height: 200px;
-        margin-bottom: 16px;
+        height: clamp(180px, 30vw, 240px);
+        margin-bottom: 1rem;
     }
 
     .card-palette {
         justify-content: center;
-        gap: 10px;
+        gap: 0.75rem;
     }
 
     .color-box {
-        width: 40px;
-        height: 40px;
+        width: clamp(36px, 8vw, 45px);
+        height: clamp(36px, 8vw, 45px);
     }
 }
 
+/* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01ms !important;
@@ -287,6 +312,7 @@ main {
 .upload-cta:focus-visible,
 .card-close:focus-visible,
 .color-box:focus-visible {
-    outline: 2px solid var(--button-primary);
+    outline: 3px solid var(--button-primary);
     outline-offset: 2px;
+    border-radius: 8px;
 }

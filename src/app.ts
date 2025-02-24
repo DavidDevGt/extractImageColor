@@ -14,7 +14,7 @@ function group(value: number, grouping: number): number {
 }
 
 async function processImage(imageSrc: string, options?: ProcessImageOptions): Promise<Color[]> {
-    const { pixelRate = 5, group: groupValue = 20, maxColors = 22 } = options || {};
+    const { pixelRate = 5, group: groupValue = 20, maxColors = 20 } = options || {};
     const imageData = await getImageData({ src: imageSrc });
     const colorCounter: { [key: string]: number } = {};
 
@@ -79,8 +79,6 @@ function createImageCard(imageSrc: string, colors: Color[]): HTMLDivElement {
 }
 
 export function init() {
-    console.log('Initialize app');
-
     const uploadBtn = document.getElementById('upload-button') as HTMLButtonElement;
     const fileInput = document.getElementById('image-input') as HTMLInputElement;
     const cardsContainer = document.getElementById('cards-container');
@@ -90,9 +88,7 @@ export function init() {
         return;
     }
 
-    // Función para procesar imagen con spinner
     async function handleImageProcessing(imageSrc: string) {
-        // Crear y mostrar spinner
         const spinner = createLoadingSpinner();
         if (cardsContainer) {
             cardsContainer.appendChild(spinner);
@@ -107,7 +103,6 @@ export function init() {
         } catch (error) {
             console.error('Error procesando la imagen:', error);
         } finally {
-            // Remover spinner una vez terminado el procesamiento
             spinner.remove();
         }
     }
