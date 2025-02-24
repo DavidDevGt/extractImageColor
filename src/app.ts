@@ -1,6 +1,7 @@
 import { getImageData } from './utils/imageData';
 import { rgbaToHex } from './utils/colorConverter';
 import { createColorPalette, Color } from './components/colorPalette';
+import { createLoadingSpinner } from './components/loadingSpinner';
 
 interface ProcessImageOptions {
     pixelRate?: number;
@@ -89,6 +90,28 @@ export function init() {
         return;
     }
 
+    // Función para procesar imagen con spinner
+    async function handleImageProcessing(imageSrc: string) {
+        // Crear y mostrar spinner
+        const spinner = createLoadingSpinner();
+        if (cardsContainer) {
+            cardsContainer.appendChild(spinner);
+        }
+
+        try {
+            const colors = await processImage(imageSrc);
+            const card = createImageCard(imageSrc, colors);
+            if (cardsContainer) {
+                cardsContainer.appendChild(card);
+            }
+        } catch (error) {
+            console.error('Error procesando la imagen:', error);
+        } finally {
+            // Remover spinner una vez terminado el procesamiento
+            spinner.remove();
+        }
+    }
+
     uploadBtn.addEventListener('click', () => {
         fileInput.click();
     });
@@ -101,17 +124,12 @@ export function init() {
         const reader = new FileReader();
         reader.onload = async () => {
             if (typeof reader.result === 'string') {
-                const colors = await processImage(reader.result);
-                const card = createImageCard(reader.result, colors);
-                cardsContainer.appendChild(card);
+                await handleImageProcessing(reader.result);
             }
         };
         reader.readAsDataURL(file);
     });
 
     const defaultImageSrc = '/zelda_landscape.jpeg';
-    processImage(defaultImageSrc).then((colors) => {
-        const card = createImageCard(defaultImageSrc, colors);
-        cardsContainer.appendChild(card);
-    });
+    handleImageProcessing(defaultImageSrc);
 }
