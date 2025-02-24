@@ -1,4 +1,5 @@
 import { copyToClipboard } from "../utils/clipboard";
+import { t } from "../i18n";
 
 export interface Color {
     hex: string;
@@ -11,7 +12,7 @@ export function createColorPalette(colors: ColorPalette, container: HTMLElement)
     container.innerHTML = '';
 
     if (colors.length === 0) {
-        container.innerHTML = '<p>No se encontraron colores dominantes.</p>';
+        container.innerHTML = `<p>${t('no_colors_found')}</p>`;
         return;
     }
 
@@ -29,7 +30,7 @@ export function createColorPalette(colors: ColorPalette, container: HTMLElement)
         colorDiv.addEventListener('click', async () => {
             await copyToClipboard(hex);
             const originalText = tooltip.textContent;
-            tooltip.textContent = "Copiado!";
+            tooltip.textContent = t('tooltip_copied');
             setTimeout(() => {
                 tooltip.textContent = originalText;
             }, 1500);
