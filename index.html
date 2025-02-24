@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>ChromaGrid - Extractor Profesional de Colores</title>
+    <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+
+<body>
+    <header>
+        <h1>ChromaGrid 🎨</h1>
+        <p>
+            Paleta de colores instantánea de tu imagen.<br>
+            Sube, extrae y copia tu paleta de colores en segundos. 🚀
+        </p>
+        <button id="upload-button" class="upload-cta">Sube Tu Imagen</button>
+        <input type="file" id="image-input" accept="image/*" style="display: none;" />
+    </header>
+
+    <main>
+        <div id="cards-container" class="cards-container"></div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
