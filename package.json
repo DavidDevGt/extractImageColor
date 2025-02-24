@@ -1,7 +1,7 @@
 {
-  "name": "extractimagecolor",
+  "name": "chromagrid",
   "version": "1.0.0",
-  "description": "Aplicación web para extraer la paleta de colores de las imagenes",
+  "description": "ChromaGrid es una webapp para extraer la paleta de colores de las imagenes",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsc -w & vite",

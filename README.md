@@ -1,6 +1,6 @@
-# Extract Image Color
+# ChromaGrid
 
-Extract Image Color es una aplicación web simple para extraer la paleta de colores de una imagen.
+ChromaGrid es una aplicación web simple para extraer la paleta de colores de una imagen.
 
 ## Requisitos
 
