@@ -2,6 +2,7 @@ import { getImageData } from './utils/imageData';
 import { rgbaToHex } from './utils/colorConverter';
 import { createColorPalette, Color } from './components/colorPalette';
 import { createLoadingSpinner } from './components/loadingSpinner';
+import { createDropOverlay } from './components/dropOverlay';
 
 interface ProcessImageOptions {
     pixelRate?: number;
@@ -23,12 +24,10 @@ async function processImage(imageSrc: string, options?: ProcessImageOptions): Pr
         const g = imageData.data[i + 1];
         const b = imageData.data[i + 2];
         const a = imageData.data[i + 3];
-
         const groupedR = group(r, groupValue);
         const groupedG = group(g, groupValue);
         const groupedB = group(b, groupValue);
         const groupedA = group(a, groupValue);
-
         const hex = rgbaToHex([groupedR, groupedG, groupedB, groupedA]);
         colorCounter[hex] = (colorCounter[hex] || 0) + 1;
     }
@@ -43,38 +42,27 @@ async function processImage(imageSrc: string, options?: ProcessImageOptions): Pr
     }));
 }
 
-/**
- * Crea la tarjeta que muestra la imagen, la paleta de colores y acciones.
- */
 function createImageCard(imageSrc: string, colors: Color[]): HTMLDivElement {
     const card = document.createElement('div');
     card.className = 'card';
-
     const closeBtn = document.createElement('button');
     closeBtn.className = 'card-close';
     closeBtn.textContent = '✕';
-    closeBtn.addEventListener('click', () => {
-        card.remove();
-    });
-
+    closeBtn.addEventListener('click', () => { card.remove(); });
     const imgContainer = document.createElement('div');
     imgContainer.className = 'card-image';
     const img = document.createElement('img');
     img.src = imageSrc;
     imgContainer.appendChild(img);
-
     const paletteContainer = document.createElement('div');
     paletteContainer.className = 'card-palette';
     createColorPalette(colors, paletteContainer);
-
     const actions = document.createElement('div');
     actions.className = 'card-actions';
-
     card.appendChild(closeBtn);
     card.appendChild(imgContainer);
     card.appendChild(paletteContainer);
     card.appendChild(actions);
-
     return card;
 }
 
@@ -82,18 +70,19 @@ export function init() {
     const uploadBtn = document.getElementById('upload-button') as HTMLButtonElement;
     const fileInput = document.getElementById('image-input') as HTMLInputElement;
     const cardsContainer = document.getElementById('cards-container');
-
     if (!uploadBtn || !fileInput || !cardsContainer) {
         console.error('No se encontraron los elementos necesarios en el DOM');
         return;
     }
+
+    const dropOverlay = createDropOverlay();
+    document.body.appendChild(dropOverlay);
 
     async function handleImageProcessing(imageSrc: string) {
         const spinner = createLoadingSpinner();
         if (cardsContainer) {
             cardsContainer.appendChild(spinner);
         }
-
         try {
             const colors = await processImage(imageSrc);
             const card = createImageCard(imageSrc, colors);
@@ -107,15 +96,16 @@ export function init() {
         }
     }
 
-    uploadBtn.addEventListener('click', () => {
-        fileInput.click();
-    });
+    uploadBtn.addEventListener('click', () => { fileInput.click(); });
 
     fileInput.addEventListener('change', async (event: Event) => {
         const target = event.target as HTMLInputElement;
         const file = target?.files?.[0];
         if (!file) return;
-
+        if (!file.type.startsWith('image/')) {
+            console.error('El archivo seleccionado no es una imagen.');
+            return;
+        }
         const reader = new FileReader();
         reader.onload = async () => {
             if (typeof reader.result === 'string') {
@@ -123,6 +113,54 @@ export function init() {
             }
         };
         reader.readAsDataURL(file);
+    });
+
+    let dragCounter = 0;
+    document.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragCounter++;
+        dropOverlay.classList.add('show');
+    });
+
+    document.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragCounter--;
+        if (dragCounter === 0) {
+            setTimeout(() => {
+                if (dragCounter === 0) {
+                    dropOverlay.classList.remove('show');
+                }
+            }, 100);
+        }
+    });
+
+    document.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    document.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragCounter = 0;
+        dropOverlay.classList.remove('show');
+        const files = e.dataTransfer?.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            if (!file.type.startsWith('image/')) {
+                console.error('El archivo soltado no es una imagen.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = async () => {
+                if (typeof reader.result === 'string') {
+                    await handleImageProcessing(reader.result);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
     });
 
     const defaultImageSrc = '/zelda_landscape.jpeg';

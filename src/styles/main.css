@@ -271,6 +271,39 @@ main {
     }
 }
 
+#drop-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: none; /* Se mostrará cuando se active */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#drop-overlay.show {
+    display: flex;
+}
+
+.drop-message {
+    text-align: center;
+    color: var(--primary-text);
+}
+
+.drop-icon {
+    margin-bottom: 16px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
 @media (max-width: 768px) {
     header {
         padding: clamp(30px, 6vh, 40px) 20px clamp(20px, 4vh, 30px);

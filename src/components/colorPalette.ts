@@ -17,7 +17,7 @@ export function createColorPalette(colors: ColorPalette, container: HTMLElement)
     }
 
     const fragment = document.createDocumentFragment();
-    colors.forEach(({ hex, name }) => {
+    colors.forEach(({ hex }) => {
         const colorDiv = document.createElement('div');
         colorDiv.className = 'color-box';
         colorDiv.style.backgroundColor = hex;
@@ -28,12 +28,16 @@ export function createColorPalette(colors: ColorPalette, container: HTMLElement)
         colorDiv.appendChild(tooltip);
 
         colorDiv.addEventListener('click', async () => {
+            if (tooltip.dataset.timeoutId) {
+                clearTimeout(parseInt(tooltip.dataset.timeoutId));
+            }
             await copyToClipboard(hex);
-            const originalText = tooltip.textContent;
             tooltip.textContent = t('tooltip_copied');
-            setTimeout(() => {
-                tooltip.textContent = originalText;
+            const timeoutId = setTimeout(() => {
+                tooltip.textContent = hex;
+                delete tooltip.dataset.timeoutId;
             }, 1500);
+            tooltip.dataset.timeoutId = timeoutId.toString();
         });
 
         fragment.appendChild(colorDiv);
