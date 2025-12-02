@@ -4,6 +4,47 @@ import { createColorPalette, Color } from './components/colorPalette';
 import { createLoadingSpinner } from './components/loadingSpinner';
 import { createDropOverlay } from './components/dropOverlay';
 
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+function validateFile(file: File): boolean {
+    const fileName = file.name.toLowerCase();
+    const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+    const maxSizeMB = (MAX_FILE_SIZE / 1024 / 1024).toFixed(2);
+
+    const isMimeAllowed = ALLOWED_MIME_TYPES.includes(file.type);
+    if (!isMimeAllowed) {
+        console.error(
+            `Tipo MIME no permitido: ${file.type}. ` +
+            `Permitidos: ${ALLOWED_MIME_TYPES.join(', ')}`
+        );
+        return false;
+    }
+
+    const hasValidExtension = ALLOWED_EXTENSIONS.some(ext =>
+        fileName.endsWith(ext)
+    );
+    if (!hasValidExtension) {
+        console.error(
+            `Extensión no permitida: ${file.name}. ` +
+            `Permitidas: ${ALLOWED_EXTENSIONS.join(', ')}`
+        );
+        return false;
+    }
+
+    const isTooLarge = file.size > MAX_FILE_SIZE;
+    if (isTooLarge) {
+        console.error(
+            `Archivo demasiado grande: ${fileSizeMB}MB. ` +
+            `Máximo permitido: ${maxSizeMB}MB`
+        );
+        return false;
+    }
+
+    return true;
+}
+
 interface ProcessImageOptions {
     pixelRate?: number;
     group?: number;
@@ -102,10 +143,7 @@ export function init() {
         const target = event.target as HTMLInputElement;
         const file = target?.files?.[0];
         if (!file) return;
-        if (!file.type.startsWith('image/')) {
-            console.error('El archivo seleccionado no es una imagen.');
-            return;
-        }
+        if (!validateFile(file)) return;
         const reader = new FileReader();
         reader.onload = async () => {
             if (typeof reader.result === 'string') {
@@ -149,10 +187,7 @@ export function init() {
         const files = e.dataTransfer?.files;
         if (files && files.length > 0) {
             const file = files[0];
-            if (!file.type.startsWith('image/')) {
-                console.error('El archivo soltado no es una imagen.');
-                return;
-            }
+            if (!validateFile(file)) return;
             const reader = new FileReader();
             reader.onload = async () => {
                 if (typeof reader.result === 'string') {
